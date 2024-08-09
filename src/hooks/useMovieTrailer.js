@@ -6,6 +6,7 @@ import { API_OPTIONS } from "../utils/constants";
 const useMovieTrailer = (movieId) => {
 
     const dispatch = useDispatch();
+    
    
   //fetch movie trailer video && updating the movie store
 
