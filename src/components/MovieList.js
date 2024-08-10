@@ -16,7 +16,7 @@ const MovieList = ({ title, movies }) => {
         `}
       </style>
       <div className='p-6'>
-        <h1 className='text-xl py-6 text-white'>{title}</h1>
+        <h1 className='sm:text-sm md:text-xl py-6 text-white'>{title}</h1>
         <div
           style={{ 
             overflowY: 'hidden', 

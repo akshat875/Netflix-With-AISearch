@@ -1,13 +1,11 @@
 import React, { useState, useRef } from 'react';
 import Header from './Header';
-import { checkValidData } from '../utils/validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
 import { BG_URL } from '../utils/constants';
-
+import '../style.css';
 
 const Login = () => {
-    
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -15,63 +13,40 @@ const Login = () => {
     const email = useRef(null);
     const password = useRef(null);
 
-    // console.log(name.current, email.current, name.current);
-
     const handleButtonClick = (e) => {
         e.preventDefault(); // Prevent default form submission
 
-        // Check if refs are not null
         const emailValue = email.current?.value || '';
         const passwordValue = password.current?.value || '';
         const nameValue = name.current?.value || '';
 
-        // console.log("button click");
-        // console.log(email.current.value, "emailcurrent");
-
-       
-
-        // Sign in or signup logic
         if (!isSignInForm) {
             // Sign up logic
             createUserWithEmailAndPassword(auth, emailValue, passwordValue)
                 .then((userCredential) => {
-                    // Signed up
                     const user = userCredential.user;
-
                     updateProfile(user, {
-                      displayName: nameValue, photoURL: "https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg"
+                        displayName: nameValue, photoURL: "https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg"
                     }).then(() => {
-                      // Profile updated!
-                    
                     }).catch((error) => {
-                      // An error occurred
-                      setErrorMessage(error.message);
+                        setErrorMessage(error.message);
                     });
-
-
-                   
                 })
                 .catch((error) => {
-                  const errorCode = error.code;
+                    const errorCode = error.code;
                     const errorMessage = error.message;
                     setErrorMessage(`${errorCode} ${errorMessage}`);
-                    
-                    
                 });
         } else {
             // Sign in logic
             signInWithEmailAndPassword(auth, emailValue, passwordValue)
                 .then((userCredential) => {
-                    // Signed in
                     const user = userCredential.user;
-                    
-                    
                 })
                 .catch((error) => {
-                  const errorCode = error.code;
-                  const errorMessage = error.message;
-                  setErrorMessage(`${errorCode} ${errorMessage}`);
-                    
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(`${errorCode} ${errorMessage}`);
                 });
         }
     }
@@ -81,17 +56,16 @@ const Login = () => {
     }
 
     return (
-        <div>
+       <> <div className='relative min-h-screen flex flex-col items-center md:-mt-20'>
             <Header />
 
-            <div className='absolute'>
-                <img 
-                    src={BG_URL}
-                    alt="logo"
-                />     
+            <div className='absolute inset-0 '>
+                <img className='object-cover w-full h-full' src={BG_URL} alt="background" />
             </div>
-            <form className='w-3/12 absolute p-8 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80'>
-                <h1 className='font-bold text-3xl py-2'>{isSignInForm ? "Sign In" : "Sign Up"}</h1>
+
+            <form className='absolute inset-x-0 top-1/4 mx-auto p-8 bg-black text-white rounded-lg bg-opacity-80 
+                            min-w-[300px] sm:w-5/12 md:w-4/12 lg:w-3/12 xl:w-2/12'>
+                <h1 className='font-bold text-2xl sm:text-3xl py-2'>{isSignInForm ? "Sign In" : "Sign Up"}</h1>
                 {!isSignInForm && (
                     <input 
                         ref={name} 
@@ -115,11 +89,11 @@ const Login = () => {
                     className="p-2 my-4 w-full bg-gray-800" 
                 />
 
-                  <p className='text-red-600 font-bold'>{errorMessage}</p>
+                <p className='text-red-600 font-bold'>{errorMessage}</p>
 
                 <button 
                     className='p-2 my-6 bg-red-700 w-full rounded-lg'
-                    onClick={handleButtonClick} // Correctly reference the function
+                    onClick={handleButtonClick} 
                 >
                     {isSignInForm ? "Sign In" : "Sign Up"}
                 </button>
@@ -128,6 +102,21 @@ const Login = () => {
                 </p>
             </form>
         </div>
+
+        <div
+            className="fixed bottom-0 inset-x-0 text-white text-center h-20 flex items-center justify-center overflow-hidden"
+            style={{
+                background: 'linear-gradient(45deg, #00f, #ff0, #f0f)',
+                backgroundSize: '400% 400%',
+                animation: 'gradientAnimation 10s ease infinite'
+            }}
+        >
+            <p className="text-lg font-bold z-10">
+                Thanks for coming here for movie recommendations according to your taste
+            </p>
+        </div>
+        </>
+        
     )
 }
 
